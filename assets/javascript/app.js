@@ -26,33 +26,38 @@ var timer = {
     time: 30,
 }
 
-
-var questions = [question_one, question_two, question_three, question_four];
-
-
 var game = {
     questions: [question_one, question_two, question_three, question_four],
     time: 30,
     currentQuestionIndex: 0,
     isTimesUp: false,
-    userCorrect:false,
+    userCorrect: false,
 
     start: function () {
+        this.time = 30;
         var currQuestion = this.questions[this.currentQuestionIndex]
+        $("#answers-container").html("");
         $("#question").html(currQuestion.question);
         $("#timer").html(game.time + "");
+        //Display answer
         for (var i = 0; i < currQuestion.answers.length; i++) {
-            $("#answers-container").append('<div class = "answer-choice" answerNumber=' + i + '>' + currQuestion.answers[i] + '</div>');
+            var questionDiv = $("<div>").addClass("answer-choice").attr("answerNumber", i).html(currQuestion.answers[i]);;
+            $("#answers-container").append(questionDiv);
         }
-        var interval = setInterval(function () {
+        var questionTimer = setInterval(function () {
             game.time--;
             $("#timer").html(game.time + "");
+
             if (game.time <= 0) {
-                isTimesUp = true;
+                clearInterval(questionTimer);
+
+                game.isTimesUp = true;
                 questionOver();
             }
         }, 1000);
         $(".answer-choice").on("click", function () {
+            clearInterval(questionTimer);
+            
             if (parseInt($(this).attr("answerNumber")) === currQuestion.correctIndex) {
                 game.userCorrect = true;
                 questionOver();
@@ -60,24 +65,36 @@ var game = {
                 game.userCorrect = false;
                 questionOver();
             }
-            // show screen with right or wrong.
-            // 
         });
     },
-
+    goToNextQuestion: function () {
+        console.log("next question");
+        this.start();
+    },
+    //console.count("poops")
     timesUp: function () {
         console.log("times up");
     }
-
 }
 
 function questionOver() {
+    game.currentQuestionIndex++;
     if (game.isTimesUp === true) {
-        console.log("timesUp");
+        $("#question-over-text").html("TimesUp");
+        setTimeout(function () {
+            game.goToNextQuestion();
+        }, 1000)
+
     } else if (game.userCorrect) {
-        console.log("right")
+        $("#question-over-text").html("Right");
+        setTimeout(function () {
+            game.goToNextQuestion();
+        }, 1000)
     } else {
-        console.log("wrong")
+        $("#question-over-text").html("wrong");
+        setTimeout(function () {
+            game.goToNextQuestion();
+        }, 1000)
     }
     //goo to next question;
 }
