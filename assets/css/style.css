@@ -1,4 +1,37 @@
-.answer-choice {
+body {
+  /* background-image: url("../images/officeBg.jpg"); */
+  background: #fafaff;
+  text-align: center;
 }
+
+#header {
+  border-bottom: 1px solid #000000;
+  padding: 8px;
+}
+
+h1 {
+  font-family: 'Baloo Thambi','Bungee Shade', cursive;
+  font-size: 64px;
+  color: blue;
+}
+
+.answer-choice {}
+
 .answer-choice:hover {
-background:#cccccc;  }
+  background: #cccccc;
+}
+
+.your-class {
+  text-align: center;
+}
+
+.question {
+}
+
+.slick-slider {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
