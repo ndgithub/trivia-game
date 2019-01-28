@@ -28,7 +28,7 @@ var timer = {
 
 var ui = {
     dialogue: function (dialogueText) {
-        $("#dialogue-box").html(dialogueText)
+        $("#dialogue-box").html("<h3>" + dialogueText + "</h3>")
     },
     timer: function (secondsRemaining) {
         $("#timer").html(secondsRemaining + "");
@@ -64,10 +64,6 @@ var game = {
         ui.dialogue("");
 
         //Display answer
-
-
-        
-
         var questionContainer = $("<h3>").text(currQuestion.question);
 
         var answersContainer = $("<div>").addClass("answers-container");
@@ -96,13 +92,13 @@ var game = {
             clearInterval(questionTimer);
             if (parseInt($(this).attr("answerNumber")) === currQuestion.correctIndex) {
                 game.totalCorrect++;
-                ui.dialogue("Right");
+                ui.dialogue("Correct");
                 game.questionOver();
             } else {
                 var currentQuestion = game.questions[game.currentQuestionIndex];
                 var correctAnswer = currentQuestion.answers[currentQuestion.correctIndex];
-                $("#dialogue-box").append("Incorrect. The correct answer was: ");
-                $("#dialogue-box").append(correctAnswer);
+                ui.dialogue("Incorrect. The correct answer was: " + correctAnswer);
+                
                 game.questionOver();
             }
         });
@@ -112,7 +108,7 @@ var game = {
     gameOver: function () {
         ui.dialogue("Game Over <br>You got "
             + game.totalCorrect + " out of " +
-            game.questions.length + ' correct<br> <div id ="reset-button">Play Again?</button>');
+            game.questions.length + ' correct<br> <div id ="reset-button" class = "btn btn-primary">Play Again?</button>');
         $("#reset-button").on("click", game.reset);
     },
     questionOver: function () {
