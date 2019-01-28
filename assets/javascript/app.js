@@ -64,10 +64,12 @@ var game = {
         ui.dialogue("");
 
         //Display answer
-        var questionContainer = $("<h3>").text(currQuestion.question);
+        var questionContainer = $("<h2>").text(currQuestion.question);
+        questionContainer.addClass("question")
 
         var answersContainer = $("<div>").addClass("answers-container");
         for (var i = 0; i < currQuestion.answers.length; i++) {
+            
             var answerChoice = $("<div>").addClass("answer-choice").attr("answerNumber", i).html(currQuestion.answers[i]);
             answersContainer.append(answerChoice);
         }
@@ -93,32 +95,31 @@ var game = {
             if (parseInt($(this).attr("answerNumber")) === currQuestion.correctIndex) {
                 game.totalCorrect++;
                 ui.dialogue("Correct");
-                game.questionOver();
+                game.questionOver(1000);
             } else {
                 var currentQuestion = game.questions[game.currentQuestionIndex];
                 var correctAnswer = currentQuestion.answers[currentQuestion.correctIndex];
-                ui.dialogue("Incorrect. The correct answer was: " + correctAnswer);
-                
-                game.questionOver();
+                ui.dialogue("Incorrect. The correct answer is: " + correctAnswer);
+                game.questionOver(3000);
             }
         });
     },
     timesUp: function () {
     },
     gameOver: function () {
-        ui.dialogue("Game Over <br>You got "
-            + game.totalCorrect + " out of " +
-            game.questions.length + ' correct<br> <div id ="reset-button" class = "btn btn-primary">Play Again?</button>');
+        ui.dialogue('Game Over <br>You got '
+            + '<b>' + game.totalCorrect + '</b> out of <b>'
+            + game.questions.length + '</b> correct<br> <div id ="reset-button" class = "btn btn-primary">Play Again?</button>');
         $("#reset-button").on("click", game.reset);
     },
-    questionOver: function () {
+    questionOver: function (time) {
         setTimeout(function () {
             if (game.currentQuestionIndex === game.questions.length - 1) {
                 game.gameOver();
             } else {
                 game.goToNextQuestion();
             }
-        }, 1000);
+        }, time);
     },
     reset: function () {
         game.time = 30;
